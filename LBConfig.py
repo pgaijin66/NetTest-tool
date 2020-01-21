@@ -5,8 +5,18 @@ import xlwt
 from xlwt import Workbook
 
 
-# Get Virtual servers that are enabled
-def GetVirtualServer(data):
+
+def get_virtual_servers(data):
+	"""
+	Searches dictionary and parses virtual servers.
+
+	Arguments:
+	data : Dictionary created by parsing Config.json file.
+
+	Returns:
+	ruvirtual_servers_enabled : List of virtual servers which are enabled
+	
+	"""
 	virtual_servers_enabled = []
 	for k,v in data.items():
 		if k == "virtual_servers":
@@ -26,11 +36,20 @@ def GetVirtualServer(data):
 					# print(v[i]["properties"]["basic"]["listen_on_traffic_ips"][0])
 	return virtual_servers_enabled
 
-# Get all the rules
-def GetRules(data):
+
+def get_rules(data):
+	"""
+	Searches dictionary and parses rules and contents.
+
+	Arguments:
+	data : Dictionary created by parsing Config.json file.
+
+	Returns:
+	rules : List of rules
+
+	"""
 	rules = []
 	contents = []
-
 	wb = Workbook()
 	sheet1=wb.add_sheet('Sheet 1')
 	sheet1.write(0,0,'Rules')
@@ -41,34 +60,34 @@ def GetRules(data):
 			for i in range(len(v)):
 				rules.append(v[i]["name"])
 				contents.append(v[i]["content"])
-				# Print Rules
-				# print(v[i]["name"])
-				# Print Content
-				# print(contents])
+				# print(v[i]["name"]) # Print Rules
+				# print(contents]) # Print Content
 
 	for x in range(len(rules)):
-		# exceptions=["Rule_HTTPS_preprod.aitsl","rule_http_aitsl.edu.au","rule_http_preprod.aitsl.edu.au","Rule_HTTPS_preprod.aitsl"]
-		# for items in exceptions:
-		# 	if items == rules[x]:
-		# 		break
-		# 	else:
-		# 		sheet1.write(x+1,0,rules[x])
-		# 		sheet1.write(x+1,1,contents[x])
-		# 		break
-		if len(contents[x]) < 32767:
-			print(contents[x])
-
-	wb.save('rules.xls')
+		exceptions=["Rule_HTTPS_preprod.aitsl","rule_http_aitsl.edu.au","rule_http_preprod.aitsl.edu.au","Rule_HTTPS_preprod.aitsl","rule_asiaeducation_redirect"]
+		for items in exceptions:
+			if len(contents[x]) < 32767:
+				if items == rules[x]:
+					break
+				else:
+					sheet1.write(x+1,0,rules[x])
+					sheet1.write(x+1,1,contents[x])
+					break
+	wb.save(r'C:\\Users\pthapa\LB\rules.xls')
+	return rules, contents
 
 
 
 def main():
-	with open('H:\\config.json', encoding="utf-8") as config_json:
+	"""
+	Main Program flow.
+
+	Calls function to return list of rules and contents
+	"""
+	with open(r'C:\\Users\pthapa\LB\config.json', encoding="utf-8") as config_json:
 		data_decode = json.load(config_json)
 		data_dict = dict(data_decode)
-	VirtualServers = GetVirtualServer(data_dict)
-	GetRules(data_dict)
-	
-
-
+	VirtualServers = get_virtual_servers(data_dict)
+	Rules, Contents = get_rules(data_dict)
+	print(Rules)
 main()
