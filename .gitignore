@@ -1,0 +1,9 @@
+# ignore all .xls file
+*.xls
+
+# Ignoring .json files
+*.json
+
+# Ignore readme file
+README.md
+
