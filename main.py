@@ -24,11 +24,6 @@ def get_virtual_servers(data):
 		if k == "virtual_servers":
 			for i in range(len(v)):
     				virtual_servers.append(v[i]["name"])
-					# print(v[i]["name"])
-					# print(v[i]["properties"]["basic"]["enabled"])
-					# print(v[i]["name"]) # Print name of enabled virtual server
-					# print(v[i]["properties"]["basic"]["port"]) # Print name of ports
-					# print(v[i]["properties"]["basic"]["listen_on_traffic_ips"][0]) # Print names of Traffic IP 
 	return virtual_servers
 
 
